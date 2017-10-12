@@ -8,11 +8,18 @@ namespace Sample
     {
         static void Main(string[] args)
         {
-            var splitted = EnumerateNumber().Take(77).Split(10);
+            var splitted = EnumerateNumber().Take(100).Split(20);
         
             foreach (IEnumerable<int> chunk in splitted)
             {
-                Console.WriteLine(string.Join(", ", chunk));
+                if (chunk.Any())
+                {
+                    Console.WriteLine(string.Join(", ", chunk));
+                }
+                else
+                {
+                    Console.WriteLine("empty!");
+                }
             }
         }
         

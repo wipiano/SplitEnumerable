@@ -21,39 +21,28 @@ namespace System.Linq
                 throw new ArgumentOutOfRangeException(nameof(size));
             }
 
-            // はじめに size ぶんのバッファを確保
-            T[] buffer = new T[size];
-
-            bool hasNext = true;
-            
-            // バッファをつぎの要素で埋める関数
-            // 何個埋めたか返す
-            int FillNext(IEnumerator<T> enumerator)
+            using (var enumerator = that.GetEnumerator())
             {
-                int count = 0;
-                while (count < size)
-                {
-                    if (enumerator.MoveNext())
-                    {
-                        buffer[count++] = enumerator.Current;
-                    }
-                    else
-                    {
-                        hasNext = false;
-                        break;
-                    }
-                }
+                // allocate buffer
+                T[] buffer = new T[size];
 
-                return count;
-            }
-
-            using (var e = that.GetEnumerator())
-            {
+                bool hasNext = enumerator.MoveNext();
+                
                 while (hasNext)
                 {
-                    int length = FillNext(e);
-                    var result = new T[length];
-                    Array.Copy(buffer, result, length);
+                    int count = 0;
+                    while (count < size)
+                    {
+                        buffer[count++] = enumerator.Current;
+                        if (!enumerator.MoveNext())
+                        {
+                            hasNext = false;
+                            break;
+                        }
+                    }
+                    
+                    var result = new T[count];
+                    Array.Copy(buffer, result, count);
                     yield return result;
                 }
             }
