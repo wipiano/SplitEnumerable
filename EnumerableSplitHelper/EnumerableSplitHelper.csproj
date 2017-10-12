@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>EnumerableSplitHelper</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Authors>wipiano</Authors>
+    <Description>Split IEnumerable safety.</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <Copyright>Copyright 2017 (c) wipiano. All rights reserved.</Copyright>
+    <PackageTags>IEnumerable Split LINQ</PackageTags>
+    <PackageProjectUrl>https://github.com/wipiano/SplitEnumerable</PackageProjectUrl>
+  </PropertyGroup>
+</Project>
