@@ -16,6 +16,11 @@ namespace System.Linq
                 throw new ArgumentNullException(nameof(that));
             }
 
+            if (size < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(size));
+            }
+
             // はじめに size ぶんのバッファを確保
             T[] buffer = new T[size];
 
