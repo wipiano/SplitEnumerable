@@ -12,7 +12,7 @@ Job=ShortRun  LaunchCount=1  TargetCount=3
 WarmupCount=3  
 
 ```
- | Method |       Mean |      Error |     StdDev |    Gen 0 | Allocated |
- |------- |-----------:|-----------:|-----------:|---------:|----------:|
- |   Linq | 850.628 ms | 674.602 ms | 38.1163 ms | 125.0000 | 203.51 KB |
- |  Split |   3.752 ms |   2.567 ms |  0.1450 ms | 273.4375 | 421.99 KB |
+ | Method |      Mean |     Error |    StdDev |  Gen 0 | Allocated |
+ |------- |----------:|----------:|----------:|-------:|----------:|
+ |   Linq | 130.96 us | 301.91 us | 17.058 us | 1.2207 |   1.95 KB |
+ |  Split |  37.32 us |  58.65 us |  3.314 us | 2.7466 |   4.29 KB |
