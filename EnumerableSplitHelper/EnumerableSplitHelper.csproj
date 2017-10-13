@@ -7,7 +7,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>EnumerableSplitHelper</PackageId>
-    <PackageVersion>1.0.1</PackageVersion>
+    <PackageVersion>1.0.2</PackageVersion>
     <Authors>wipiano</Authors>
     <Description>Split IEnumerable safety.This won't cause multiple enumeration.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
