@@ -8,7 +8,7 @@ namespace Sample
     {
         static void Main(string[] args)
         {
-            var splitted = EnumerateNumber().Take(100).Split(20);
+            var splitted = EnumerateNumber().Take(100).Split(11).ToArray();
         
             foreach (IEnumerable<int> chunk in splitted)
             {

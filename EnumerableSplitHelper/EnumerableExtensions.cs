@@ -23,17 +23,16 @@ namespace System.Linq
 
             using (var enumerator = that.GetEnumerator())
             {
-                // allocate buffer
-                T[] buffer = new T[size];
-
                 bool hasNext = enumerator.MoveNext();
                 
                 while (hasNext)
                 {
                     int count = 0;
+                    var block = new T[size];
+
                     while (count < size)
                     {
-                        buffer[count++] = enumerator.Current;
+                        block[count++] = enumerator.Current;
                         if (!enumerator.MoveNext())
                         {
                             hasNext = false;
@@ -41,9 +40,16 @@ namespace System.Linq
                         }
                     }
                     
-                    var result = new T[count];
-                    Array.Copy(buffer, result, count);
-                    yield return result;
+                    // 最後の block の場合は resize して返す
+                    if (hasNext)
+                    {
+                        yield return block;
+                    }
+                    else
+                    {
+                        Array.Resize(ref block, count);
+                        yield return block;
+                    }
                 }
             }
         }
