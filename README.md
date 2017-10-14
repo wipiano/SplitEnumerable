@@ -3,6 +3,26 @@ Split IEnumerable&lt;T&gt; safety
 
 This `Split<T>` method won't cause multiple enumeration.
 
+## install
+
+```sh
+PM> Install-Package EnumerableSplitHelper -Version 1.0.2
+```
+
+or 
+
+```
+> dotnet add package EnumerableSplitHelper --version 1.0.2
+```
+
+or 
+
+```
+> paket add EnumerableSplitHelper --version 1.0.2
+```
+
+## sample
+
 ```csharp
 using System;
 using System.Collections.Generic;
