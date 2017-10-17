@@ -76,7 +76,7 @@ namespace Benchmark
             var list = new List<MockObject>();
             foreach (var segment in _enum.Split(100))
             {
-                list.AddRange(list);
+                list.AddRange(segment);
             }
             return list;
         }
