@@ -57,7 +57,7 @@ namespace Benchmark
         }
 
         [Benchmark]
-        public List<MockObject> Linq()
+        public List<MockObject> LinqSkipTake()
         {
             var list = new List<MockObject>();
             var segment = _enum.Take(100);
@@ -69,7 +69,7 @@ namespace Benchmark
             }
             return list;
         }
-
+        
         [Benchmark]
         public List<MockObject> Split()
         {
