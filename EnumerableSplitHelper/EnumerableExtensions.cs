@@ -9,7 +9,7 @@ namespace System.Linq
         /// </summary>
         /// <param name="that">分割するコレクション</param>
         /// <param name="size">分割後のサイズ</param>
-        public static IEnumerable<IEnumerable<T>> Split<T>(this IEnumerable<T> that, int size)
+        public static IEnumerable<T[]> Split<T>(this IEnumerable<T> that, int size)
         {
             if (that == null)
             {
@@ -24,7 +24,7 @@ namespace System.Linq
             return that.SplitInner(size);
         }
 
-        private static IEnumerable<IEnumerable<T>> SplitInner<T>(this IEnumerable<T> that, int size)
+        private static IEnumerable<T[]> SplitInner<T>(this IEnumerable<T> that, int size)
         {
             using (var enumerator = that.GetEnumerator())
             {
