@@ -109,6 +109,42 @@ namespace Benchmark
         }
 
         [Benchmark]
+        public List<MockObject> ArrayBuffer()
+        {
+            var list = new List<MockObject>();
+            const int count = 100;
+
+            using (var enumerator = _source.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    var buffer = new MockObject[count];
+                    
+                    var i = 0;
+                    while (i < count)
+                    {
+                        buffer[i] = enumerator.Current;
+                        if(!enumerator.MoveNext()) break;
+                        i++;
+                    }
+
+                    if (i < count - 1)
+                    {
+                        var newSize = i;
+                        var newArray = new MockObject[newSize];
+                        Array.Copy(buffer, 0, newArray, 0, newSize);
+                        buffer = newArray;
+                    }
+                    
+                    list.AddRange(buffer);
+                }
+            }
+
+            return list;
+            
+        }
+
+        [Benchmark]
         public List<MockObject> RxLike()
         {
             var list = new List<MockObject>();
