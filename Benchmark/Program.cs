@@ -143,6 +143,34 @@ namespace Benchmark
             return list;
             
         }
+
+        [Benchmark]
+        public List<MockObject> RxLike()
+        {
+            var list = new List<MockObject>();
+            const int count = 100;
+
+            foreach (var segment in _source.RxTake(count, count))
+            {
+                list.AddRange(segment);
+            }
+            
+            return list;
+        }
+
+        [Benchmark]
+        public List<MockObject> RxLike2()
+        {
+            var list = new List<MockObject>();
+            const int count = 100;
+
+            foreach (var segment in _source.RxSimpleTake(count, count))
+            {
+                list.AddRange(segment);
+            }
+            
+            return list;
+        }
         
     }
 
