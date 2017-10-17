@@ -1,4 +1,5 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using System;
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Exporters;
@@ -80,6 +81,69 @@ namespace Benchmark
             }
             return list;
         }
+        
+        // Test codes from:
+        // https://qiita.com/GlassGrass/items/010e2865cbfd06c71bd6#i-skip--take-%E3%81%9D%E3%81%AE1
+        [Benchmark]
+        public List<MockObject> ListBuffer()
+        {
+            var list = new List<MockObject>();
+            const int count = 100;
+
+            using (var enumerator = _source.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    var buffer = new List<MockObject>();
+                    for (int i = 0; i < count; i++)
+                    {
+                        buffer.Add(enumerator.Current);
+                        if(!enumerator.MoveNext()) break;
+                    }
+                
+                    list.AddRange(buffer);
+                }
+            }
+
+            return list;
+        }
+
+        [Benchmark]
+        public List<MockObject> ArrayBuffer()
+        {
+            var list = new List<MockObject>();
+            const int count = 100;
+
+            using (var enumerator = _source.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    var buffer = new MockObject[count];
+                    
+                    var i = 0;
+                    while (i < count)
+                    {
+                        buffer[i] = enumerator.Current;
+                        if(!enumerator.MoveNext()) break;
+                        i++;
+                    }
+
+                    if (i < count - 1)
+                    {
+                        var newSize = i;
+                        var newArray = new MockObject[newSize];
+                        Array.Copy(buffer, 0, newArray, 0, newSize);
+                        buffer = newArray;
+                    }
+                    
+                    list.AddRange(buffer);
+                }
+            }
+
+            return list;
+            
+        }
+        
     }
 
     public class MockObject
