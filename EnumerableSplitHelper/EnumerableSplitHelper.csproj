@@ -7,11 +7,14 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>EnumerableSplitHelper</PackageId>
-    <PackageVersion>1.0.2</PackageVersion>
+    <PackageVersion>1.0.3</PackageVersion>
     <Authors>wipiano</Authors>
     <Description>Split IEnumerable safety.This won't cause multiple enumeration.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>fix performance issue</PackageReleaseNotes>
+    <PackageReleaseNotes>
+      * check arguments before MoveNext()
+      * change return type: IEnumerable&lt;IEnumerable&lt;T&gt;&gt; -> IEnumerable&lt;T[]&gt;
+    </PackageReleaseNotes>
     <Copyright>Copyright 2017 (c) wipiano. All rights reserved.</Copyright>
     <PackageTags>IEnumerable Split LINQ</PackageTags>
     <PackageProjectUrl>https://github.com/wipiano/SplitEnumerable</PackageProjectUrl>

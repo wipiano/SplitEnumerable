@@ -21,6 +21,11 @@ namespace System.Linq
                 throw new ArgumentOutOfRangeException(nameof(size));
             }
 
+            return that.SplitInner(size);
+        }
+
+        private static IEnumerable<IEnumerable<T>> SplitInner<T>(this IEnumerable<T> that, int size)
+        {
             using (var enumerator = that.GetEnumerator())
             {
                 bool hasNext = enumerator.MoveNext();

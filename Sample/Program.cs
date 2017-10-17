@@ -21,6 +21,15 @@ namespace Sample
                     Console.WriteLine("empty!");
                 }
             }
+
+            try
+            {
+                (null as IEnumerable<int>).Split(10); // この時点でエラー
+            }
+            catch (ArgumentNullException e)
+            {
+                Console.WriteLine($"error: {e}");
+            }
         }
         
         private static IEnumerable<int> EnumerateNumber()
