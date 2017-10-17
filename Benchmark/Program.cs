@@ -46,12 +46,12 @@ namespace Benchmark
     {
         private const int IterationCount = 10000;
 
-        private IEnumerable<MockObject> _enum;
+        private IEnumerable<MockObject> _source;
 
         [GlobalSetup]
         public void Setup()
         {
-            _enum = Enumerable.Range(0, IterationCount)
+            _source = Enumerable.Range(0, IterationCount)
                 .Select(v => new MockObject() {Value = v})
                 .ToList();
         }
@@ -60,12 +60,12 @@ namespace Benchmark
         public List<MockObject> LinqSkipTake()
         {
             var list = new List<MockObject>();
-            var segment = _enum.Take(100);
+            var segment = _source.Take(100);
             var cnt = 1;
             while (segment.Any())
             {
                 list.AddRange(segment);
-                segment = _enum.Skip(cnt++ * 100).Take(100);
+                segment = _source.Skip(cnt++ * 100).Take(100);
             }
             return list;
         }
@@ -74,7 +74,7 @@ namespace Benchmark
         public List<MockObject> Split()
         {
             var list = new List<MockObject>();
-            foreach (var segment in _enum.Split(100))
+            foreach (var segment in _source.Split(100))
             {
                 list.AddRange(segment);
             }
