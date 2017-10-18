@@ -1,4 +1,5 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using System;
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Exporters;
@@ -46,12 +47,12 @@ namespace Benchmark
     {
         private const int IterationCount = 10000;
 
-        private IEnumerable<MockObject> _enum;
+        private IEnumerable<MockObject> _source;
 
         [GlobalSetup]
         public void Setup()
         {
-            _enum = Enumerable.Range(0, IterationCount)
+            _source = Enumerable.Range(0, IterationCount)
                 .Select(v => new MockObject() {Value = v})
                 .ToList();
         }
@@ -60,12 +61,12 @@ namespace Benchmark
         public List<MockObject> LinqSkipTake()
         {
             var list = new List<MockObject>();
-            var segment = _enum.Take(100);
+            var segment = _source.Take(100);
             var cnt = 1;
             while (segment.Any())
             {
                 list.AddRange(segment);
-                segment = _enum.Skip(cnt++ * 100).Take(100);
+                segment = _source.Skip(cnt++ * 100).Take(100);
             }
             return list;
         }
@@ -74,12 +75,82 @@ namespace Benchmark
         public List<MockObject> Split()
         {
             var list = new List<MockObject>();
-            foreach (var segment in _enum.Split(100))
+            foreach (var segment in _source.Split(100))
             {
                 list.AddRange(segment);
             }
             return list;
         }
+        
+        // Test codes from:
+        // https://qiita.com/GlassGrass/items/010e2865cbfd06c71bd6#i-skip--take-%E3%81%9D%E3%81%AE1
+        [Benchmark]
+        public List<MockObject> ListBuffer()
+        {
+            var list = new List<MockObject>();
+            const int count = 100;
+
+            using (var enumerator = _source.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    var buffer = new List<MockObject>();
+                    for (int i = 0; i < count; i++)
+                    {
+                        buffer.Add(enumerator.Current);
+                        if(!enumerator.MoveNext()) break;
+                    }
+                
+                    list.AddRange(buffer);
+                }
+            }
+
+            return list;
+        }
+
+        [Benchmark]
+        public List<MockObject> ArrayBuffer()
+        {
+            var list = new List<MockObject>();
+//            const int count = 100;
+
+            foreach (var segment in _source.ArrayBufferSplit(100))
+            {
+                list.AddRange(segment);
+            }
+
+            return list;
+            
+        }
+
+        [Benchmark]
+        public List<MockObject> RxLike()
+        {
+            var list = new List<MockObject>();
+            const int count = 100;
+
+            foreach (var segment in _source.RxTake(count, count))
+            {
+                list.AddRange(segment);
+            }
+            
+            return list;
+        }
+
+        [Benchmark]
+        public List<MockObject> RxLike2()
+        {
+            var list = new List<MockObject>();
+            const int count = 100;
+
+            foreach (var segment in _source.RxSimpleTake(count, count))
+            {
+                list.AddRange(segment);
+            }
+            
+            return list;
+        }
+        
     }
 
     public class MockObject
